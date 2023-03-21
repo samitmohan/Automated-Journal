@@ -1,6 +1,6 @@
 # The Python Two Minute Journal
 
-![Python Five Minute Journal Cover](cover.jpg)
+![Python Two Minute Journal Cover](cover.jpg)
 
 ---
 
@@ -37,7 +37,7 @@ The Markdown file.
 
 ```markdown
 
-Five Minute Journal | Friday, Jan 27 2023
+Two Minute Journal | Friday, Jan 27 2023
 
 > If someone betrays you once, it's their fault; if they betray you twice, it's your fault.
 >
