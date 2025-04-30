@@ -48,9 +48,9 @@ Two Minute Journal | Friday, Jan 27 2023
 
 ### I am grateful for...
 
-1. Dad for giving me money always when I need it
+1. Papa
 2. Being consistent with my college studies so I don't have last minute stress when it comes to finals
-3. The independent and single room life I'm living
+3. The independent life and single room life I'm living
 
 ### What would make today great?
 
@@ -69,7 +69,7 @@ Two Minute Journal | Friday, Jan 27 2023
 
 ### Highlights of the day
 
-1. Burger King
+1. Burger King LMAO
 2. Singularity paper
 3. Talking to my family
 
