@@ -2,8 +2,6 @@
 
 An intelligent journaling CLI that combines the simplicity of a two-minute daily journal with NLP-powered mood analysis. Write morning and evening entries, get real-time sentiment and emotion analysis, track your streaks, and explore mood trends through an interactive dashboard.
 
-![Python Two Minute Journal Cover](cover.jpg)
-
 ---
 
 ## Features
@@ -133,41 +131,6 @@ journals/
   2023/
     5MJ-2023-06-28.md               # journal entry
     5MJ-2023-06-28.analysis.json    # NLP analysis results
-```
-
-### Sample Entry
-
-```markdown
-Two Minute Journal | Friday, Jan 27 2023
-
-> "If someone betrays you once, it's their fault..."
->
-> ~ Eleanor Roosevelt
-
----
-05:48 PM
-
-### I am grateful for...
-1. Papa
-2. Being consistent with my college studies
-3. The independent life I'm living
-
-### What would make today great?
-1. Confident when revising for finals
-2. Leetcode daily problem
-3. Good dinner
-```
-
-### Sample Analysis Output
-
-```
-+----------------------------------+
-|       Journal Analysis           |
-|                                  |
-|  Sentiment   POSITIVE (0.91)    |
-|  Top Emotion Joy (0.72)         |
-|  Keywords    family, exercise    |
-+----------------------------------+
 ```
 
 ## Development
