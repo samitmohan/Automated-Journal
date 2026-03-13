@@ -1,45 +1,146 @@
-# The Python Two Minute Journal
+# Journal App - AI-Powered Journaling CLI
+
+An intelligent journaling CLI that combines the simplicity of a two-minute daily journal with NLP-powered mood analysis. Write morning and evening entries, get real-time sentiment and emotion analysis, track your streaks, and explore mood trends through an interactive dashboard.
 
 ![Python Two Minute Journal Cover](cover.jpg)
 
 ---
 
+## Features
+
+- **Rich Terminal UI** - color-coded prompts, panels, and tables powered by Rich
+- **NLP Sentiment Analysis** - automatic positive/negative classification using DistilBERT
+- **7-Emotion Detection** - anger, disgust, fear, joy, neutral, sadness, surprise via DistilRoBERTa
+- **Keyword Extraction** - statistical keyword extraction using YAKE
+- **Streak Tracking** - consecutive day tracking to build journaling habits
+- **Streamlit Dashboard** - interactive charts for mood trends, emotion distribution, and insights
+- **Morning/Evening Entries** - run twice daily for a complete reflection cycle
+
+## Screenshots
+
+### Interactive Journaling Session
+<!-- Rich-formatted CLI with quote panel and prompts -->
+![CLI Session](screenshots/cli-session.png)
+
+### Post-Entry Analysis
+<!-- Sentiment, emotion, and keyword analysis panel shown after saving -->
+![Analysis Summary](screenshots/analysis-summary.png)
+
+### Journal Stats
+<!-- Stats table showing entries, streak, and average sentiment -->
+![Stats](screenshots/stats.png)
+
+### Dashboard - Insights
+<!-- Emotion pie chart, top keywords, day-of-week patterns -->
+![Dashboard Insights](screenshots/dashboard-insights.png)
+
+---
+
+## Tech Stack
+
+| Component | Tool | Why |
+|-----------|------|-----|
+| Sentiment | `distilbert-base-uncased-finetuned-sst-2-english` | Fast, standard baseline (~268MB) |
+| Emotion | `j-hartmann/emotion-english-distilroberta-base` | 7 emotions, richer than binary sentiment (~330MB) |
+| Keywords | `yake` (statistical) | No model download, pragmatic for short personal text |
+| CLI | `rich` | Modern terminal formatting |
+| Dashboard | `streamlit` + `plotly` | Interactive charts with minimal code |
+| Storage | Markdown + JSON sidecars | Git-trackable, no database needed |
+
 ## Requirements
 
-* Python >= 3.7
-* pip
-* requests
-* python-dotenv==0.21.0
-* Jinja2==3.1.2
+- Python >= 3.10
+- [uv](https://docs.astral.sh/uv/) (package manager)
 
-### Installation
+## Installation
 
-```
-pip install -r requirements.txt
-```
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/Automated-Journal.git
+cd Automated-Journal
 
-### Start your daily Two Minute Journal
+# Install dependencies
+uv sync
 
-Run it twice a day, morning and evening.
-
-```
-python3 journal.py
+# (Optional) Install dev dependencies for testing/linting
+uv pip install ruff pytest pytest-cov
 ```
 
-Journal markdown files will be saved in the `journals` directory.
+## Usage
+
+### Daily Journaling
+
+Run it twice a day - morning and evening:
+
+```bash
+uv run journal
+```
+
+The CLI will:
+1. Display a daily inspirational quote
+2. Prompt you through 3 morning questions (gratitude, goals, affirmations)
+3. Save the entry as markdown
+4. Run NLP analysis and display a summary
+
+Run again in the evening for 2 reflection questions (highlights, lessons learned).
+
+### Batch Analyze Past Entries
+
+```bash
+uv run journal analyze          # analyze entries without existing analysis
+uv run journal analyze --force  # re-analyze all entries
+```
+
+### View Stats
+
+```bash
+uv run journal stats
+```
+
+### Launch Dashboard
+
+```bash
+uv run journal dashboard
+```
+
+## Project Structure
 
 ```
-2023/5MJ-2023-06-28.md
-2022/5MJ-2022-01-12.md
+src/journal_app/
+  cli.py                    # Rich-powered CLI entry point
+  config.py                 # Environment and i18n configuration
+  models.py                 # Journal, Question, Answer models
+  providers/
+    base.py                 # ABC base classes for storage and quotes
+    zen_quote_provider.py   # Daily quote fetcher
+    markdown_storage_provider.py  # Markdown + JSON sidecar storage
+  analysis/
+    schemas.py              # SentimentResult, EmotionScores, JournalAnalysis
+    parser.py               # Markdown journal parser
+    analyzer.py             # HuggingFace pipeline: sentiment + emotion + keywords
+  dashboard/
+    app.py                  # Streamlit dashboard with 4 pages
+templates/                  # Jinja2 templates for markdown output
+tests/                      # pytest test suite (36 tests)
 ```
 
-The Markdown file.
+## Output Format
+
+Journal entries are saved as markdown with JSON analysis sidecars:
+
+```
+journals/
+  2023/
+    5MJ-2023-06-28.md               # journal entry
+    5MJ-2023-06-28.analysis.json    # NLP analysis results
+```
+
+### Sample Entry
 
 ```markdown
-
 Two Minute Journal | Friday, Jan 27 2023
 
-> If someone betrays you once, it's their fault; if they betray you twice, it's your fault.
+> "If someone betrays you once, it's their fault..."
 >
 > ~ Eleanor Roosevelt
 
@@ -47,38 +148,50 @@ Two Minute Journal | Friday, Jan 27 2023
 05:48 PM
 
 ### I am grateful for...
-
 1. Papa
-2. Being consistent with my college studies so I don't have last minute stress when it comes to finals
-3. The independent life and single room life I'm living
+2. Being consistent with my college studies
+3. The independent life I'm living
 
 ### What would make today great?
-
-1. Confident when revising Web Programming for finals tomorrow
+1. Confident when revising for finals
 2. Leetcode daily problem
 3. Good dinner
+```
 
-### Daily affirmations
+### Sample Analysis Output
 
-1. I got 10 CGPA in my 3rd year
-2. I am working towards computer science like George Hotz
-3. I am confident about myself
+```
++----------------------------------+
+|       Journal Analysis           |
+|                                  |
+|  Sentiment   POSITIVE (0.91)    |
+|  Top Emotion Joy (0.72)         |
+|  Keywords    family, exercise    |
++----------------------------------+
+```
 
----
-06:46 PM
+## Development
 
-### Highlights of the day
+```bash
+# Run linter
+uv run ruff check .
 
-1. Burger King LMAO
-2. Singularity paper
-3. Talking to my family
+# Run tests with coverage
+uv run pytest --cov=journal_app --cov-report=term-missing -v
 
-### What did I learn today?
+# All 36 tests pass with mocked HuggingFace models (no model downloads needed)
+```
 
-1. Web Programming
-2. Time dilates as you delay work
-3. Hunger goes well with studying
+## Configuration
 
+Copy `.env.example` to `.env` and customize:
+
+```bash
+LOCALE=en
+TITLE="Two Minute Journal"
+NAMESPACE="5MJ"
+DEFAULT_TOTAL_ANSWERS=3
+OUTPUT_DIR="journals"
 ```
 
 ## License

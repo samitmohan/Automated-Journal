@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "journal-app"
+version = "2.0.0"
+description = "AI-powered journaling CLI with NLP sentiment analysis and mood tracking"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = [
+    "requests>=2.28",
+    "python-dotenv>=0.21",
+    "python-i18n[YAML]>=0.3.9",
+    "Jinja2>=3.1",
+    "rich>=13.0",
+    "transformers>=4.36",
+    "torch>=2.1",
+    "yake>=0.4.8",
+    "streamlit>=1.30",
+    "plotly>=5.18",
+    "pandas>=2.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "ruff>=0.4",
+]
+
+[project.scripts]
+journal = "journal_app.cli:main"
+journal-dashboard = "journal_app.dashboard.app:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/journal_app"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+src = ["src", "tests"]
+exclude = ["providers/", "journal.py", "py_two_minute_journal.py", "config.py"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP"]
